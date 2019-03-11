@@ -8,45 +8,57 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+
 
 public class MainActivity extends AppCompatActivity {
+    private TextView textViewResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        textViewResult = findViewById(R.id.text_view_result);
+
+        Restrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://jsonplaceholder.typicode.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class)
+                call<List<Post>> call = jsonPlaceHolderApi.getPosts();
+        call.enqueue(new Callback<List<Post>>() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public  void onResponse(call<List<Post>> call, Response<List<Post>> response){
+               if (!response.isSuccessful()){
+                   textViewResult.setText("Code: " + response.code());
+                   return;
+               }
+               List<Post> posts = response.body();
+               for (Post posts: posts){
+                   String content = "";
+                   content += "ID:" + posts.getId() + "\n";
+                   content += "User ID:" + posts.getUserId() + "\n";
+                   content += "Title:" + posts.getTitle() + "\n";
+                   content += "Text:" + posts.getText() + "\n";
+
+                   textViewResult.append(content);
+
+
+               }
             }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            @Override
+            public void onFailure(call<List<Post>> call, Throwable t){
+                textViewResult.setText(t.getLocalizedMessage());
+                //error 404
+            }
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
+
+
+
+
