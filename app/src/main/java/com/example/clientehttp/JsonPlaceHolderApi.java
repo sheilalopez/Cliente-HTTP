@@ -12,6 +12,6 @@ import retrofit2.http.Path;
 public interface JsonPlaceHolderApi {
 
     @GET ("posts")
-    call<List<Post> > getPosts();
+    Call<List<Post> > getPosts();
 
 }
