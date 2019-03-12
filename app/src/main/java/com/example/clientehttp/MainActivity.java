@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -45,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.myRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Button btnGet = findViewById(R.id.btnGET);
+        Button btnPost = findViewById(R.id.btnPOST);
 
-        Gson gson = new GsonBuilder().serializeNulls().create();
+
+        Gson gson = new GsonBuilder().create();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -61,8 +65,17 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         trackAPI = retrofit.create(TrackAPI.class);
+
+        btnGet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getTracks();
+            }
+        });
+
+
         getTracks();
-        //createTrack(" la macarena" ,"los del rio");
+        //createTrack(" corazon latino" ," david bisbal");
 
 
     }
@@ -77,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
 
                     Track track = response.body();
                     String content = "";
-                    content += "Code:" + response.code() + "\n";
-                    content += "ID:" + track.getId() + "\n";
-                    content += "Title" + track.getTitle() + "\n";
-                    content += "Singer" + track.getSinger() + "\n\n";
+                    content += "Code: " + response.code() + "\n";
+                    content += "ID: " + track.getId() + "\n";
+                    content += "Title: " + track.getTitle() + "\n";
+                    content += "Singer: " + track.getSinger() + "\n\n";
                     list.add(content);
                 }
                 myAdapter = new MyAdapter(list);

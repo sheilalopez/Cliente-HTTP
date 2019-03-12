@@ -9,7 +9,37 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/myRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="501dp"
         android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/btnGET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GET TRACKS" />
+
+    <Button
+        android:id="@+id/btnPOST"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="POST TRACK" />
+
+    <Button
+        android:id="@+id/btnPUT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EDIT TRACK" />
+
+    <Button
+        android:id="@+id/btnGetID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GET TRACK BY ID" />
+
+    <Button
+        android:id="@+id/btnDELETE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DELETE" />
 
 </LinearLayout>
